@@ -3,7 +3,7 @@ import sys
 import nltk
 import ssl
 
-# Handle SSL certificate issues
+
 try:
     _create_unverified_https_context = ssl._create_unverified_context
 except AttributeError:
@@ -11,7 +11,6 @@ except AttributeError:
 else:
     ssl._create_default_https_context = _create_unverified_https_context
 
-# Download required NLTK data
 print("Downloading required NLTK data...")
 try:
     nltk.download('punkt_tab')
@@ -31,10 +30,10 @@ def train_chatbot():
     print("TRAINING CHATBOT MODEL")
     print("="*50)
     
-    # Create directories if they don't exist
+   
     os.makedirs('models', exist_ok=True)
     
-    # Preprocess data
+
     print("Step 1: Preprocessing data...")
     preprocessor = DataPreprocessor()
     intents = preprocessor.load_intents('data/intents.json')
@@ -49,20 +48,20 @@ def train_chatbot():
         print("Error: Could not preprocess data!")
         return
     
-    # Create training data
+ 
     print("Step 2: Creating training data...")
     train_x, train_y = preprocessor.create_training_data()
     
-    # Save preprocessed data
+ 
     print("Step 3: Saving preprocessed data...")
     preprocessor.save_preprocessed_data(words, classes)
     
-    # Train model
+   
     print("Step 4: Training neural network model...")
     model = ChatbotModel(len(train_x[0]), len(train_y[0]))
     history = model.train(train_x, train_y, epochs=200, verbose=1)
     
-    # Save model
+   
     print("Step 5: Saving trained model...")
     model.save_model('models/chatbot_model.h5')
     
@@ -80,7 +79,7 @@ def run_chatbot():
     print("="*50)
     
     try:
-        # Initialize chatbot
+       
         chatbot = Chatbot(
             'models/chatbot_model.h5',
             'models/words.pkl',
