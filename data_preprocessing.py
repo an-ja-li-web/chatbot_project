@@ -13,7 +13,7 @@ class DataPreprocessor:
         self.documents = []
         self.ignore_words = ['?', '.', ',', '!']
         
-        # Download required NLTK data
+
         try:
             nltk.data.find('tokenizers/punkt')
         except LookupError:
@@ -41,18 +41,17 @@ class DataPreprocessor:
         
         for intent in intents['intents']:
             for pattern in intent['patterns']:
-                # Tokenize each word
+                
                 word_list = nltk.word_tokenize(pattern)
                 self.words.extend(word_list)
                 
-                # Add documents
+               
                 self.documents.append((word_list, intent['tag']))
                 
-                # Add classes
+              
                 if intent['tag'] not in self.classes:
                     self.classes.append(intent['tag'])
         
-        # Lemmatize and remove duplicates
         self.words = [self.lemmatizer.lemmatize(w.lower()) for w in self.words if w not in self.ignore_words]
         self.words = sorted(list(set(self.words)))
         self.classes = sorted(list(set(self.classes)))
@@ -74,17 +73,16 @@ class DataPreprocessor:
             pattern_words = document[0]
             pattern_words = [self.lemmatizer.lemmatize(word.lower()) for word in pattern_words]
             
-            # Create bag of words
+          
             for word in self.words:
                 bag.append(1) if word in pattern_words else bag.append(0)
-            
-            # Create output row
+         
             output_row = list(output_empty)
             output_row[self.classes.index(document[1])] = 1
             
             training.append([bag, output_row])
         
-        # Shuffle and convert to numpy array
+ 
         np.random.shuffle(training)
         training = np.array(training, dtype=object)
         
@@ -97,9 +95,7 @@ class DataPreprocessor:
     
     def save_preprocessed_data(self, words, classes):
         """Save preprocessed data"""
-        # Create models directory if it doesn't exist
         os.makedirs('models', exist_ok=True)
-        
         with open('models/words.pkl', 'wb') as f:
             pickle.dump(words, f)
         with open('models/classes.pkl', 'wb') as f:
