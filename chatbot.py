@@ -11,7 +11,7 @@ class Chatbot:
     def __init__(self, model_path, words_path, classes_path, intents_path):
         self.lemmatizer = WordNetLemmatizer()
         
-        # Check if all required files exist
+       
         if not os.path.exists(model_path):
             raise FileNotFoundError(f"Model file not found: {model_path}")
         if not os.path.exists(words_path):
@@ -21,13 +21,13 @@ class Chatbot:
         if not os.path.exists(intents_path):
             raise FileNotFoundError(f"Intents file not found: {intents_path}")
         
-        # Load model and preprocessed data
+      
         print("Loading chatbot model and data...")
         self.model = keras.models.load_model(model_path)
         self.words = pickle.load(open(words_path, 'rb'))
         self.classes = pickle.load(open(classes_path, 'rb'))
         
-        # Load intents
+      
         with open(intents_path, 'r') as file:
             self.intents = json.load(file)
         
@@ -61,7 +61,7 @@ class Chatbot:
         ERROR_THRESHOLD = 0.25
         results = [[i, r] for i, r in enumerate(res) if r > ERROR_THRESHOLD]
         
-        # Sort by probability
+    
         results.sort(key=lambda x: x[1], reverse=True)
         
         return_list = []
