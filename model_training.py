@@ -2,15 +2,15 @@ import tensorflow as tf
 import numpy as np
 import os
 
-# Suppress TensorFlow warnings
+
 tf.get_logger().setLevel('ERROR')
 
-# Test imports immediately
+
 print(f"TensorFlow version: {tf.__version__}")
 print("Testing TensorFlow components...")
 
 try:
-    # Test if all components work
+   
     test_model = tf.keras.Sequential([tf.keras.layers.Dense(1)])
     print("✅ TensorFlow imports working correctly!")
 except Exception as e:
@@ -29,14 +29,13 @@ class ChatbotModel:
         self.input_shape = input_shape
         self.num_classes = num_classes
         
-        # Build the model
+      
         self.model = self.build_model()
         
     def build_model(self):
         """Build the neural network model"""
         print("Building neural network model...")
         
-        # Use tf.keras directly instead of separate imports
         model = tf.keras.Sequential([
             tf.keras.layers.Dense(128, input_shape=(self.input_shape,), activation='relu'),
             tf.keras.layers.Dropout(0.5),
@@ -44,8 +43,7 @@ class ChatbotModel:
             tf.keras.layers.Dropout(0.5),
             tf.keras.layers.Dense(self.num_classes, activation='softmax')
         ])
-        
-        # Compile model
+ 
         sgd = tf.keras.optimizers.SGD(learning_rate=0.01, momentum=0.9, nesterov=True)
         model.compile(
             loss='categorical_crossentropy',
@@ -93,7 +91,7 @@ class ChatbotModel:
         Args:
             filepath: Path to save the model
         """
-        # Create models directory if it doesn't exist
+       
         os.makedirs('models', exist_ok=True)
         
         self.model.save(filepath)
@@ -126,15 +124,13 @@ class ChatbotModel:
         return self.model.summary()
 
 
-# Test the imports
 if __name__ == "__main__":
     print("Testing TensorFlow imports...")
     print(f"TensorFlow version: {tf.__version__}")
     
-    # Test model creation
     try:
         chatbot = ChatbotModel(input_shape=100, num_classes=10)
         print("✅ Model created successfully!")
         chatbot.get_model_summary()
     except Exception as e:
-        print(f"❌ Error creating model: {e}")
+        print(f"Error creating model: {e}")
